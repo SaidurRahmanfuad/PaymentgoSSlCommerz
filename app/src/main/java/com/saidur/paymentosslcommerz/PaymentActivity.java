@@ -17,10 +17,10 @@ import com.sslwireless.sslcommerzlibrary.view.singleton.IntegrateSSLCommerz;
 import com.sslwireless.sslcommerzlibrary.viewmodel.listener.SSLCTransactionResponseListener;
 
 public class PaymentActivity extends AppCompatActivity implements SSLCTransactionResponseListener {
-public static final String Store_ID="srtlt602536bc89c1d";
-public static final String Store_Password="srtlt602536bc89c1d@ssl";
+public static final String Store_ID="your stor id";
+public static final String Store_Password="your store password";
  double Amount=10;
-//public static final String Tran_ID="srtlt602536bc89c1d";
+
 
 TextView success,faild,error;
     @Override
@@ -29,27 +29,38 @@ TextView success,faild,error;
         setContentView(R.layout.activity_payment);
 
         initView();
-        //initPay();
+        initPay();
+
+    }
+
+
+
+    private void initView() {
+        success=findViewById(R.id.success);
+        faild=findViewById(R.id.faild);
+        error=findViewById(R.id.error);
+    }
+    private void initPay() {
         final SSLCommerzInitialization sslCommerzInitialization = new SSLCommerzInitialization(
                 Store_ID,
-                "hb",
+                Store_Password,
                 Amount,
                 SSLCCurrencyType.BDT,
                 "123456789098765",
                 "yourProductType",
                 SSLCSdkType.TESTBOX);
-       // CustomerInitializer();
+        // CustomerInitializer();
         final SSLCCustomerInfoInitializer customerInfoInitializer = new SSLCCustomerInfoInitializer(
-                "Motaleb", "abc@gmail.com",
+                "Saidur", "devsaidur@gmail.com",
                 "address", "dhaka", "1214",
                 "Bangladesh",
-                "0179587891");
+                "01793208341");
         //ProductInitializer();
         final SSLCProductInitializer productInitializer = new SSLCProductInitializer ("food", "food",
                 new SSLCProductInitializer.ProductProfile.TravelVertical(
                         "Travel", "10",
                         "A", "12", "Dhk-Syl"));
-      //  ShipmentInitialzer();
+        //  ShipmentInitialzer();
         final SSLCShipmentInfoInitializer shipmentInfoInitializer = new SSLCShipmentInfoInitializer (
                 "Courier",
                 2, new SSLCShipmentInfoInitializer.ShipmentDetails(
@@ -57,37 +68,17 @@ TextView success,faild,error;
                 "Dhaka","1000","BD"));
         //EMI Initializer
         final SSLCEMITransactionInitializer emiTransactionInitializer = new SSLCEMITransactionInitializer(1);
-        //SubmitData();
         IntegrateSSLCommerz
                 .getInstance(PaymentActivity.this)
                 .addSSLCommerzInitialization(sslCommerzInitialization)
-                .addEMITransactionInitializer(emiTransactionInitializer)
                 .addCustomerInfoInitializer(customerInfoInitializer)
                 .addProductInitializer(productInitializer)
-                .buildApiCall(this);
-    }
-
-
-    public void initPay() {
-        final SSLCommerzInitialization sslCommerzInitialization = new SSLCommerzInitialization(
-                Store_ID,
-                "hb",
-                Amount,
-                SSLCCurrencyType.BDT,
-                "123456789098765",
-                "yourProductType",
-                SSLCSdkType.TESTBOX);
-    }
-
-    private void initView() {
-   success=findViewById(R.id.success);
-   faild=findViewById(R.id.faild);
-   error=findViewById(R.id.error);
+                .buildApiCall(PaymentActivity.this);
     }
 
     @Override
     public void transactionSuccess(SSLCTransactionInfoModel sslcTransactionInfoModel) {
-     success.setText(/*sslcTransactionInfoModel.getAPIConnect()+*/sslcTransactionInfoModel.getStatus());
+        success.setText(sslcTransactionInfoModel.getStatus() );
     }
 
     @Override
